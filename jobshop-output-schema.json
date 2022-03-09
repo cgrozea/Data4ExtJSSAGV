@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://fokus.fraunhofer.de/jobshop-input-schema.json",
+  "title": "Job Shop Scheduling with AGV transport - Solutions",
+  "description": "Specification of the output data structure for such problems extending the input structure",
+  "type": "object",
+  "required": ["instance", "schedule", "times", "positions", "transport"],
+  "properties": {
+    "instance": {
+      "description": "the unique identifier of the solved/scheduled problem instance",
+      "type": "string"
+    },
+    "description": {
+      "description": "an optional description of the solved/scheduled problem instance",
+      "type": "string"
+    },
+    "schedule": {
+      "description": "a schedule consists of a non-empty list of jobs",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "description": "a job consists of a non-empty list of tasks, i.e. a non-empty list of integer value triples",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "array",
+          "description": "a value triple of a task consists of a machine number (starting with 0), a processing time in time units and a scheduled start time",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "times": {
+      "description": "a non-empty array of arrays of transition times, one for each machine (number) - the machine numbers are the indices",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "description": "a non-empty array of transitions times 'from' this machine 'to' the machines - the machine numbers are the indices",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "description": "the non-negative transition time 'from' one machine 'to' the other machine - zero if 'from' and 'to' are equal",
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "positions": {
+      "description": "an array of initial positions, i.e. machine numbers of AGVs - the length of the array defines the number of AGVs",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "integer"
+      }
+    },
+    "transport": {
+      "description": "a transport consists of a non-empty list of transport jobs - one per AGV",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "description": "a transport job consists of a non-empty list of transport tasks, i.e. a non-empty list of integer value quadruples",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "array",
+          "description": "a value quadruple of a transport task consists of two machine numbers (starting with 0) - the 'from' and 'to' locations , the start time of the transport and the identifier of job resp. material which is transported (-1 if there is an empty drive",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "integer",
+            "minimum": -1
+          }
+        }
+      }
+    }
+  }
+}
